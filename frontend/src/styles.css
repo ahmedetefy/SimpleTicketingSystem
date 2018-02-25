@@ -125,3 +125,11 @@ span.input-group-addon i {
 	padding:3px;
 	padding-bottom: 0px;
 }
+
+
+.navbar-default .navbar-nav>.active>a, 
+.navbar-default .navbar-nav>.active>a:focus, 
+.navbar-default .navbar-nav>.active>a:hover {
+    color:white;
+    background-color: #f59723;
+}
