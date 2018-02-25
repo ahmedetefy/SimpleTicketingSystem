@@ -6,7 +6,7 @@ frontend/e2e
 backend/bin
 backend/include
 backend/lib
-backend/.vagrant
+backend/.vagrant/
 .vagrant/
 
 

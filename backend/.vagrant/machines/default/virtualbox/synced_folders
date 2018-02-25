@@ -1,1 +1,0 @@
-{"virtualbox":{"vagrant-root":{"id":"vagrant-root","mount_options":["dmode=777","fmode=777"],"guestpath":"/vagrant","hostpath":"/home/etefy/Desktop/SimpleTicketingSystem/backend","disabled":false,"__vagrantfile":true}}}
