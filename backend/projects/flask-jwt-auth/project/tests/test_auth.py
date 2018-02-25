@@ -81,6 +81,37 @@ class TestAuthLogin(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 200)
 
+    def test_non_registered_user_login(self):
+        """ Test for login of non-registered user """
+        with self.client:
+            response = login_user(self, "byrd@byrd.com", "byrd")
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'fail')
+            self.assertTrue(data['message'] == 'User does not exist.')
+            self.assertTrue(response.content_type == 'application/json')
+            self.assertEqual(response.status_code, 404)
+
+    def test_registered_user_wrong_password_login(self):
+        """ Test for Login with wrong credentials """
+        with self.client:
+            # user registration
+            resp_register = register_user(self, 'byrd@byrd.com', 'byrd')
+            data_register = json.loads(resp_register.data.decode())
+            self.assertTrue(data_register['status'] == 'success')
+            self.assertTrue(
+                data_register['message'] == 'Successfully registered.'
+            )
+            self.assertTrue(data_register['auth_token'])
+            self.assertTrue(resp_register.content_type == 'application/json')
+            self.assertEqual(resp_register.status_code, 201)
+            # registered user login
+            response = login_user(self, 'byrd@byrd.com', 'byrd2')
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'fail')
+            self.assertTrue(data['message'] == 'User does not exist.')
+            self.assertTrue(response.content_type == 'application/json')
+            self.assertEqual(response.status_code, 404)
+
 
 if __name__ == '__main__':
     unittest.main()
