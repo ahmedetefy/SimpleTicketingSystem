@@ -26,17 +26,12 @@ export class LoginComponent implements OnInit {
     .catch((err) => {
       console.log(err);
     });
-    // this.auth.login(sampleUser).then((user) => {
-    //   console.log(user.json());
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
   }
 
   login(): void {
   	this.auth.login(this.user)
     .then((user) => {
+      localStorage.setItem('token', user.json().auth_token);
       console.log(user.json());
     })
     .catch((err) => {
