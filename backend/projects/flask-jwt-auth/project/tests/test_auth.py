@@ -113,5 +113,26 @@ class TestAuthLogin(BaseTestCase):
             self.assertEqual(response.status_code, 404)
 
 
+class TestAuthStatus(BaseTestCase):
+    def test_user_status(self):
+        """ Test for user status """
+        with self.client:
+            resp_register = register_user(self, "byrd@gmail.com", "byrd")
+            response = self.client.get(
+                '/auth/status',
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        resp_register.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'success')
+            self.assertTrue(data['data'] is not None)
+            self.assertTrue(data['data']['email'] == 'joe@gmail.com')
+            self.assertTrue(data['data']['admin'] is 'true' or 'false')
+            self.assertEqual(response.status_code, 200)
+
+
 if __name__ == '__main__':
     unittest.main()
