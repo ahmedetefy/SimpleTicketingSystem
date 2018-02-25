@@ -117,7 +117,7 @@ class TestAuthStatus(BaseTestCase):
     def test_user_status(self):
         """ Test for user status """
         with self.client:
-            resp_register = register_user(self, "byrd@gmail.com", "byrd")
+            resp_register = register_user(self, "byrd@byrd.com", "byrd")
             response = self.client.get(
                 '/auth/status',
                 headers=dict(
@@ -129,7 +129,7 @@ class TestAuthStatus(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['data'] is not None)
-            self.assertTrue(data['data']['email'] == 'joe@gmail.com')
+            self.assertTrue(data['data']['email'] == 'byrd@byrd.com')
             self.assertTrue(data['data']['admin'] is 'true' or 'false')
             self.assertEqual(response.status_code, 200)
 
