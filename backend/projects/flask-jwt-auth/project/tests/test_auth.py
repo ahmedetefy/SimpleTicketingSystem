@@ -134,5 +134,41 @@ class TestAuthStatus(BaseTestCase):
             self.assertEqual(response.status_code, 200)
 
 
+class TestAuthLogout(BaseTestCase):
+    def test_valid_logout(self):
+        """ Test for logout before token expires """
+        with self.client:
+            # user registration
+            resp_register = register_user(self, "byrd@byrd.com", "byrd")
+            data_register = json.loads(resp_register.data.decode())
+            self.assertTrue(data_register['status'] == 'success')
+            self.assertTrue(
+                data_register['message'] == 'Successfully registered.')
+            self.assertTrue(data_register['auth_token'])
+            self.assertTrue(resp_register.content_type == 'application/json')
+            self.assertEqual(resp_register.status_code, 201)
+            # user login
+            resp_login = login_user(self, "byrd@byrd.com", "byrd")
+            data_login = json.loads(resp_login.data.decode())
+            self.assertTrue(data_login['status'] == 'success')
+            self.assertTrue(data_login['message'] == 'Successfully logged in.')
+            self.assertTrue(data_login['auth_token'])
+            self.assertTrue(resp_login.content_type == 'application/json')
+            self.assertEqual(resp_login.status_code, 200)
+            # valid token logout
+            response = self.client.post(
+                '/auth/logout',
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        resp_login.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'success')
+            self.assertTrue(data['message'] == 'Successfully logged out.')
+            self.assertEqual(response.status_code, 200)
+
+
 if __name__ == '__main__':
     unittest.main()
