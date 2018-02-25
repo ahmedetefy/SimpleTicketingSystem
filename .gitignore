@@ -6,6 +6,7 @@ frontend/e2e
 backend/bin
 backend/include
 backend/lib
+backend/.vagrant
 
 
 # Byte-compiled / optimized / DLL files
