@@ -13,7 +13,7 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-							<input #emailValid="ngModel" required [(ngModel)]='user.email' type="text" class="form-control" name="email" id="email"/>
+							<input #emailValid="ngModel" required [(ngModel)]='email' type="text" class="form-control" name="email" id="email"/>
 						</div>
 						<div *ngIf="emailValid.errors && (emailValid.dirty || emailValid.touched)" class="text-center">
 							<p class="field-error" [hidden]="!emailValid.errors.required">
@@ -31,7 +31,7 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-							<input #passwordValid="ngModel" required [(ngModel)]='user.password' type="password" class="form-control" name="password" id="password" />
+							<input #passwordValid="ngModel" required [(ngModel)]='password' type="password" class="form-control" name="password" id="password" />
 						</div>
 						<div *ngIf="passwordValid.errors && (passwordValid.dirty || passwordValid.touched)" class="text-center">
 							<p class="field-error" [hidden]="!passwordValid.errors.required">
