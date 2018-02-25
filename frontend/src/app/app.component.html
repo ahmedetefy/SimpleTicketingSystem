@@ -11,7 +11,7 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li class="link-margin" routerLink="/" routerLinkActive="active"><a >Home</a></li>
+        <li class="link-margin" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a >Home</a></li>
         <li class="link-margin" routerLink="/login" routerLinkActive="active"><a>Login</a></li>
       </ul>
     </div><!--/.nav-collapse -->
