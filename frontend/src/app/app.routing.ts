@@ -4,6 +4,8 @@ import {RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+import { EnsureAuthenticated } from './services/ensure-authenticated.service';
+import { LoginRedirect } from './services/login-redirect.service';
 
 const appRoutes: Routes = [
 	{
@@ -13,10 +15,12 @@ const appRoutes: Routes = [
     {
         path:"login",
         component: LoginComponent,
+        canActivate: [LoginRedirect]
     },
     {
         path:"tickets",
         component: TicketListComponent,
+        canActivate: [EnsureAuthenticated]
     }
 ]
 
