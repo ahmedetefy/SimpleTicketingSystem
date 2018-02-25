@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'login',
@@ -9,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
   providers: [ AuthService ]
 })
 export class LoginComponent implements OnInit {
+  user: User = new User();
 
   constructor(private auth: AuthService) { }
 
@@ -24,16 +26,22 @@ export class LoginComponent implements OnInit {
     .catch((err) => {
       console.log(err);
     });
-    this.auth.login(sampleUser).then((user) => {
+    // this.auth.login(sampleUser).then((user) => {
+    //   console.log(user.json());
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
+  }
+
+  login(): void {
+  	this.auth.login(this.user)
+    .then((user) => {
       console.log(user.json());
     })
     .catch((err) => {
       console.log(err);
     });
-  }
-
-  login(event:any, formData:any) {
-  	console.log(formData.value)
   }
 
 }
