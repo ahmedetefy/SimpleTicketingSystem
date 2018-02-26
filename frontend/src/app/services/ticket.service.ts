@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
+import { TicketItem } from '../models/ticket-item';
 import 'rxjs/add/operator/toPromise';
 
 
@@ -16,6 +17,11 @@ export class TicketService {
 	    Authorization: `Bearer ${token}`
 	  });
      return this.http.get(url, {headers: headers}).toPromise();
+   }
+
+   submitTicket(ticket: TicketItem) {
+    let url: string = `${this.BASE_URL}/create`;
+    return this.http.post(url, ticket, {headers: this.headers}).toPromise();
    }
 
 }

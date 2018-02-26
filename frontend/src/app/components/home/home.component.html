@@ -6,13 +6,13 @@
 <div class="container">
 	<div class="row main">
 		<div class="main-login main-center">
-			<form #ticketForm='ngForm' (ngSubmit)='submitTicket($event, ticketForm)'>
+			<form #ticketForm='ngForm' (ngSubmit)='submitTicket(ticketForm)'>
 				<div class="form-group" name="userForm">
 					<label for="name" class="cols-sm-2 control-label">Name</label>
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-							<input [(ngModel)]='name' type="text" class="form-control" name="name" id="name" #nameValid="ngModel" required/> 
+							<input [(ngModel)]="ticketSubmitted.name" type="text" class="form-control" name="name" id="name" #nameValid="ngModel" required/> 
 						</div>
 						<div *ngIf="nameValid.errors && (nameValid.dirty || nameValid.touched)" class="text-center">
 							<p class="field-error" [hidden]="!nameValid.errors.required">
@@ -28,7 +28,7 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-							<input #emailValid="ngModel" required [(ngModel)]='email' type="text" class="form-control" name="email" id="email"/>
+							<input #emailValid="ngModel" required [(ngModel)]='ticketSubmitted.email' type="text" class="form-control" name="email" id="email"/>
 						</div>
 						<div *ngIf="emailValid.errors && (emailValid.dirty || emailValid.touched)" class="text-center">
 							<p class="field-error" [hidden]="!emailValid.errors.required">
@@ -46,7 +46,7 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-							<input  #subjectValid="ngModel" required [(ngModel)]='subject' type="text" class="form-control" name="subject" id="subject"  />
+							<input  #subjectValid="ngModel" required [(ngModel)]='ticketSubmitted.subject' type="text" class="form-control" name="subject" id="subject"  />
 						</div>
 						<div *ngIf="subjectValid.errors && (subjectValid.dirty || subjectValid.touched)" class="text-center">
 							<p class="field-error" [hidden]="!subjectValid.errors.required">
@@ -60,11 +60,11 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-th " aria-hidden="true"></i></span>
-							<select #typeValid="ngModel" required [(ngModel)]='type' name="type" class="form-control" id="typeSelect" >
+							<select #typeValid="ngModel" required [(ngModel)]='ticketSubmitted.type' name="type" class="form-control" id="typeSelect" >
 							  <option value="" selected ></option>
-						      <option value="bugreport">Bug Report</option>
-						      <option value="featuredrequest">Feature Request</option>
-						      <option value="other">Other</option>
+						      <option value="Bug Report">Bug Report</option>
+						      <option value="Featured Request">Feature Request</option>
+						      <option value="Other">Other</option>
 						    </select>
 						</div>
 						<div *ngIf="typeValid.errors && (typeValid.dirty || typeValid.touched)" class="text-center">
@@ -80,11 +80,11 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-hourglass-half fa" aria-hidden="true"></i></span>
 							
-							<select [(ngModel)]='urgency' #urgencyValid="ngModel" required name="urgency" class="form-control" id="urgencySelect" >
+							<select [(ngModel)]='ticketSubmitted.urgency' #urgencyValid="ngModel" required name="urgency" class="form-control" id="urgencySelect" >
 							  <option value="" selected ></option>
-						      <option value="low"><span class="label label-success">Low Urgency</span></option>
-						      <option value="medium"><span class="label label-warning">Medium Urgency</span></option>
-						      <option value="high"><span class="label label-danger">High Urgency</span></option>
+						      <option value="Low Urgency"><span class="label label-success">Low Urgency</span></option>
+						      <option value="Medium Urgency"><span class="label label-warning">Medium Urgency</span></option>
+						      <option value="High Urgency"><span class="label label-danger">High Urgency</span></option>
 						    </select>
 						</div>
 						<div *ngIf="urgencyValid.errors && (urgencyValid.dirty || urgencyValid.touched)" class="text-center">
@@ -99,7 +99,7 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-							<textarea #messageValid="ngModel" required [(ngModel)]='message' type="text" class="form-control" name="message" id="message"  > </textarea>
+							<textarea #messageValid="ngModel" required [(ngModel)]='ticketSubmitted.message' type="text" class="form-control" name="message" id="message"  > </textarea>
 						</div>
 						<div *ngIf="messageValid.errors && (messageValid.dirty || messageValid.touched)" class="text-center">
 							<p class="field-error" [hidden]="!messageValid.errors.required">

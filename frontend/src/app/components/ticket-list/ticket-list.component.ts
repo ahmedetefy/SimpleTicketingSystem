@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { TicketService } from '../../services/ticket.service';
-import { Ticket } from '../../models/ticket';
+import { TicketItem } from '../../models/ticket-item';
 
 @Component({
   selector: 'ticket-list',
@@ -12,7 +12,7 @@ import { Ticket } from '../../models/ticket';
 export class TicketListComponent implements OnInit {
 
   isLoggedIn: boolean = false;
-  ticketList: [Ticket];
+  ticketList: [TicketItem];
 
   constructor(private auth: AuthService, private ticket: TicketService) {}
 
@@ -24,7 +24,7 @@ export class TicketListComponent implements OnInit {
 
       this.ticket.getTicketList(token)
       .then((tickets) => {
-        this.ticketList = tickets.json() as [Ticket];
+        this.ticketList = tickets.json() as [TicketItem];
      })
       .catch((err) => {
         console.log(err);
