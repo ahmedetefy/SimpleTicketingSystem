@@ -11,6 +11,7 @@ import { TicketListComponent } from './components/ticket-list/ticket-list.compon
 import { EnsureAuthenticated } from './services/ensure-authenticated.service';
 import { LoginRedirect } from './services/login-redirect.service';
 import { AuthService } from './services/auth.service';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 
@@ -19,7 +20,8 @@ import { AuthService } from './services/auth.service';
     AppComponent,
     HomeComponent,
     LoginComponent,
-    TicketListComponent
+    TicketListComponent,
+    NavbarComponent
   ],
   imports: [
   	AppRoutingModule,

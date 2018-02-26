@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { User } from '../models/user';
 import 'rxjs/add/operator/toPromise';
@@ -20,12 +20,12 @@ export class AuthService {
   }
 
   ensureAuthenticated(token): Promise<any> {
-	let url: string = `${this.BASE_URL}/status`;
-	let headers: Headers = new Headers({
-	  'Content-Type': 'application/json',
-	  Authorization: `Bearer ${token}`
-	});
-	return this.http.get(url, {headers: headers}).toPromise();
+	  let url: string = `${this.BASE_URL}/status`;
+	  let headers: Headers = new Headers({
+	    'Content-Type': 'application/json',
+	    Authorization: `Bearer ${token}`
+	  });
+	  return this.http.get(url, {headers: headers}).toPromise();
    }
 
 }
