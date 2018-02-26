@@ -104,6 +104,7 @@ class Ticket(db.Model):
     type = db.Column(db.String(255), nullable=False)
     urgency = db.Column(db.String(255), nullable=False)
     message = db.Column(db.Text, nullable=False)
+    status = db.Column(db.String(80), nullable=True)
 
     def __init__(self, name, email, subject, type, urgency, message):
         self.name = name
@@ -112,4 +113,5 @@ class Ticket(db.Model):
         self.type = type
         self.urgency = urgency
         self.message = message
+        self.status = "Open"
 
