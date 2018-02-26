@@ -89,3 +89,27 @@ class BlacklistToken(db.Model):
             return True
         else:
             return False
+
+
+class Ticket(db.Model):
+    """
+    Ticket model for storing ticket related information
+    """
+    __tablename__ = 'tickets'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    subject = db.Column(db.String(255), nullable=False)
+    type = db.Column(db.String(255), nullable=False)
+    urgency = db.Column(db.String(255), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+
+    def __init__(self, name, email, subject, type, urgency, message):
+        self.name = name
+        self.email = email
+        self.subject = subject
+        self.type = type
+        self.urgency = urgency
+        self.message = message
+

@@ -22,3 +22,6 @@ db = SQLAlchemy(app)
 from project.server.auth.views import auth_blueprint
 app.register_blueprint(auth_blueprint)
 
+from project.server.tickets.views import tickets_blueprint
+app.register_blueprint(tickets_blueprint)
+
