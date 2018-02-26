@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { TicketService } from '../../services/ticket.service';
+import { Ticket } from '../../models/ticket';
 
 @Component({
   selector: 'ticket-list',
@@ -10,23 +12,28 @@ import { AuthService } from '../../services/auth.service';
 export class TicketListComponent implements OnInit {
 
   isLoggedIn: boolean = false;
-  constructor(private auth: AuthService) {}
+  ticketList: [Ticket];
+
+  constructor(private auth: AuthService, private ticket: TicketService) {}
+
   ngOnInit(): void {
+
     const token = localStorage.getItem('token');
+
     if (token) {
-      this.auth.ensureAuthenticated(token)
-      .then((user) => {
-        console.log(user.json());
-        if (user.json().status === 'success') {
-          this.isLoggedIn = true;
-        }
-      })
+
+      this.ticket.getTicketList(token)
+      .then((tickets) => {
+        this.ticketList = tickets.json() as [Ticket];
+     })
       .catch((err) => {
         console.log(err);
       });
     }
+
+
   }
 
   
-  }
+}
 

@@ -8,10 +8,11 @@ import { AppRoutingModule } from './app.routing';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+
 import { EnsureAuthenticated } from './services/ensure-authenticated.service';
 import { LoginRedirect } from './services/login-redirect.service';
 import { AuthService } from './services/auth.service';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { TicketService } from './services/ticket.service';
 
 
 
@@ -21,7 +22,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     HomeComponent,
     LoginComponent,
     TicketListComponent,
-    NavbarComponent
   ],
   imports: [
   	AppRoutingModule,
@@ -33,7 +33,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AuthService,
     LoginRedirect,
     EnsureAuthenticated,
-
+    TicketService
   ],
   bootstrap: [AppComponent]
 })
