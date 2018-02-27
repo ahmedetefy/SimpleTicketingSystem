@@ -8,6 +8,9 @@ tickets_blueprint = Blueprint('tickets', __name__)
 
 
 class CreateTicketAPI(MethodView):
+    """
+    Create Ticket Resource
+    """
     def post(self):
         post_data = request.get_json()
         try:
@@ -36,6 +39,9 @@ class CreateTicketAPI(MethodView):
 
 
 class ListTicketAPI(MethodView):
+    """
+    List Ticket Resource
+    """
     def get(self):
         auth_header = request.headers.get('Authorization')
         if auth_header:
@@ -89,6 +95,9 @@ class ListTicketAPI(MethodView):
 
 
 class UpdateTicketAPI(MethodView):
+    """
+    Update Ticket Resource
+    """
     def put(self):
         auth_header = request.headers.get('Authorization')
         if auth_header:
@@ -135,6 +144,9 @@ class UpdateTicketAPI(MethodView):
 
 
 class DeleteTicketAPI(MethodView):
+    """
+    Delete Ticket Resource
+    """
     def delete(self, ticketID):
         auth_header = request.headers.get('Authorization')
         if auth_header:
@@ -172,6 +184,9 @@ class DeleteTicketAPI(MethodView):
 
 
 class AddCommentTicketAPI(MethodView):
+    """
+    Add Comment to Ticket Resource
+    """
     def post(self, ticketID):
         auth_header = request.headers.get('Authorization')
         if auth_header:

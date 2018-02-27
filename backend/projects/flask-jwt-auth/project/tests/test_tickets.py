@@ -1,9 +1,7 @@
-import time
 import json
-import unittest
 
 from project.server import db
-from project.server.models import Ticket, BlacklistToken
+from project.server.models import BlacklistToken
 from project.tests.base import BaseTestCase
 
 
@@ -60,8 +58,9 @@ class TestTicketCreation(BaseTestCase):
     def test_ticket_creation_full_information(self):
         """ Test for ticket creation registration """
         with self.client:
-            response = create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
-                                     "Bug Report", "High", "Testing")
+            response = create_ticket(self, "byrd@byrd.com", "byrd",
+                                     "Hello World", "Bug Report",
+                                     "High", "Testing")
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['message'] == 'Ticket successfully added!')
@@ -92,6 +91,7 @@ class TestTicketCreation(BaseTestCase):
 
 class TestTicketListAPI(BaseTestCase):
     def test_ticket_list_not_logged_in(self):
+        """ Test for obtaining ticket list when user is not logged in """
         with self.client:
             # user registration
             resp_register = register_user(self, 'byrd@byrd.com', 'byrd')
@@ -112,6 +112,7 @@ class TestTicketListAPI(BaseTestCase):
             self.assertTrue(data['status'] == 'fail')
 
     def test_ticket_list_logged_in(self):
+        """ Test for obtaining ticket list when user is logged in """
         with self.client:
             # Add dummy tickets
             create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
@@ -144,6 +145,7 @@ class TestTicketListAPI(BaseTestCase):
 
 class TestTicketUpdateAPI(BaseTestCase):
     def test_ticket_update_not_logged_in(self):
+        """ Test for ticket update when user is not logged in """
         with self.client:
             # user registration
             resp_register = register_user(self, 'byrd@byrd.com', 'byrd')
@@ -159,6 +161,7 @@ class TestTicketUpdateAPI(BaseTestCase):
                 token=json.loads(resp_register.data.decode())['auth_token'])
             db.session.add(blacklist_token)
             db.session.commit()
+            # Ticket Update Request
             response = self.client.put(
                 '/tickets/edit',
                 headers=dict(
@@ -171,6 +174,7 @@ class TestTicketUpdateAPI(BaseTestCase):
             self.assertTrue(data['status'] == 'fail')
 
     def test_ticket_update_logged_in(self):
+        """ Test for ticket update when user is logged in """
         with self.client:
             # Add dummy tickets
             create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
@@ -192,7 +196,7 @@ class TestTicketUpdateAPI(BaseTestCase):
             self.assertTrue(data_login['auth_token'])
             self.assertTrue(resp_login.content_type == 'application/json')
             self.assertEqual(resp_login.status_code, 200)
-            #  Request ticket list
+            #  Request ticket update
             response = self.client.put(
                 '/tickets/edit',
                 data=json.dumps(dict(
@@ -218,6 +222,7 @@ class TestTicketUpdateAPI(BaseTestCase):
 
 class TestTicketDeleteAPI(BaseTestCase):
     def test_ticket_delete_not_logged_in(self):
+        """ Test for ticket deletion when user is not logged in """
         with self.client:
             create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
                           "Bug Report", "High", "Testing")
@@ -235,6 +240,7 @@ class TestTicketDeleteAPI(BaseTestCase):
                 token=json.loads(resp_register.data.decode())['auth_token'])
             db.session.add(blacklist_token)
             db.session.commit()
+            # Delete Ticket Request
             response = self.client.delete(
                 '/tickets/delete/1',
                 headers=dict(
@@ -247,6 +253,7 @@ class TestTicketDeleteAPI(BaseTestCase):
             self.assertTrue(data['status'] == 'fail')
 
     def test_ticket_delete_logged_in(self):
+        """ Test for ticket deletion when user is logged in """
         with self.client:
             # Add dummy tickets
             create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
@@ -268,7 +275,7 @@ class TestTicketDeleteAPI(BaseTestCase):
             self.assertTrue(data_login['auth_token'])
             self.assertTrue(resp_login.content_type == 'application/json')
             self.assertEqual(resp_login.status_code, 200)
-            #  Request ticket list
+            #  Request delete ticket
             response = self.client.delete(
                 '/tickets/delete/1',
                 content_type='application/json',
@@ -285,6 +292,7 @@ class TestTicketDeleteAPI(BaseTestCase):
 
 class TestAddCommentTicketAPI(BaseTestCase):
     def test_comment_ticket_add_not_logged_in(self):
+        """ Test for creation of a comment when user is not logged in """
         with self.client:
             create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
                           "Bug Report", "High", "Testing")
@@ -302,6 +310,7 @@ class TestAddCommentTicketAPI(BaseTestCase):
                 token=json.loads(resp_register.data.decode())['auth_token'])
             db.session.add(blacklist_token)
             db.session.commit()
+            # create comment request
             response = self.client.post(
                 '/tickets/1/createComment',
                 headers=dict(
@@ -314,6 +323,7 @@ class TestAddCommentTicketAPI(BaseTestCase):
             self.assertTrue(data['status'] == 'fail')
 
     def test_comment_ticket_add_logged_in(self):
+        """ Test for creation of a comment when user is logged in """
         with self.client:
             # Add dummy tickets
             create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
@@ -335,6 +345,7 @@ class TestAddCommentTicketAPI(BaseTestCase):
             self.assertTrue(data_login['auth_token'])
             self.assertTrue(resp_login.content_type == 'application/json')
             self.assertEqual(resp_login.status_code, 200)
+            # create comment request
             response = self.client.post(
                 '/tickets/1/createComment',
                 content_type='application/json',
