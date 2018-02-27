@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 
 from project.server import bcrypt, db
-from project.server.models import Ticket, User
+from project.server.models import Ticket, User, Comment
 
 tickets_blueprint = Blueprint('tickets', __name__)
 
@@ -55,6 +55,13 @@ class ListTicketAPI(MethodView):
                 tickets = Ticket.query.all()
                 ticketlist = []
                 for ticket in tickets:
+                    commentList = []
+                    for comment in ticket.ticketComments:
+                        tempComment = {
+                            "email": comment.email,
+                            "comment": comment.comment
+                        }
+                        commentList.append(tempComment)
                     tempTicket = {
                         "id": ticket.id,
                         "name": ticket.name,
@@ -63,7 +70,8 @@ class ListTicketAPI(MethodView):
                         "type": ticket.type,
                         "urgency": ticket.urgency,
                         "message": ticket.message,
-                        "status": ticket.status
+                        "status": ticket.status,
+                        "comments": commentList
                     }
                     ticketlist.append(tempTicket)
                 return make_response(jsonify(ticketlist)), 201
@@ -163,11 +171,54 @@ class DeleteTicketAPI(MethodView):
             return make_response(jsonify(responseObject)), 401
 
 
+class AddCommentTicketAPI(MethodView):
+    def post(self, ticketID):
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            try:
+                auth_token = auth_header.split(" ")[1]
+            except IndexError:
+                responseObject = {
+                    'status': 'fail',
+                    'message': 'Bearer token malformed.'
+                }
+                return make_response(jsonify(responseObject)), 401
+        else:
+            auth_token = ''
+        if auth_token:
+            resp = User.decode_auth_token(auth_token)
+            if not isinstance(resp, str):
+                post_data = request.get_json()
+                ticket = Ticket.query.filter_by(
+                    id=ticketID).first()
+                comment = Comment(email=post_data.get('email'),
+                                  comment=post_data.get('comment'))
+                ticket.ticketComments.append(comment)
+                db.session.commit()
+                responseObject = {
+                    'status': 'success',
+                    'message': 'Comment successfully added!'
+                }
+                return make_response(jsonify(responseObject)), 201
+            responseObject = {
+                'status': 'fail',
+                'message': resp
+            }
+            return make_response(jsonify(responseObject)), 401
+        else:
+            responseObject = {
+                'status': 'fail',
+                'message': 'Provide a valid auth token.'
+            }
+            return make_response(jsonify(responseObject)), 401
+
+
 # define the API resources
 creation_ticket_view = CreateTicketAPI.as_view('create_ticket_api')
 list_ticket_view = ListTicketAPI.as_view('list_ticket_api')
 edit_ticket_view = UpdateTicketAPI.as_view('edit_ticket_api')
 delete_ticket_view = DeleteTicketAPI.as_view('delete_ticket_api')
+add_comment_ticket_view = AddCommentTicketAPI.as_view('add_comment_ticket_api')
 
 
 # add Rules for API Endpoints
@@ -190,4 +241,9 @@ tickets_blueprint.add_url_rule(
     '/tickets/delete/<int:ticketID>',
     view_func=delete_ticket_view,
     methods=['DELETE']
+)
+tickets_blueprint.add_url_rule(
+    '/tickets/<int:ticketID>/createComment',
+    view_func=add_comment_ticket_view,
+    methods=['POST']
 )

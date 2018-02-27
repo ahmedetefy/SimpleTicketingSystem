@@ -281,3 +281,72 @@ class TestTicketDeleteAPI(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['message'] == 'Ticket successfully deleted!')
+
+
+class TestAddCommentTicketAPI(BaseTestCase):
+    def test_comment_ticket_add_not_logged_in(self):
+        with self.client:
+            create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
+                          "Bug Report", "High", "Testing")
+            # user registration
+            resp_register = register_user(self, 'byrd@byrd.com', 'byrd')
+            data_register = json.loads(resp_register.data.decode())
+            self.assertTrue(data_register['status'] == 'success')
+            self.assertTrue(
+                data_register['message'] == 'Successfully registered.')
+            self.assertTrue(data_register['auth_token'])
+            self.assertTrue(resp_register.content_type == 'application/json')
+            self.assertEqual(resp_register.status_code, 201)
+            # blacklist a valid token
+            blacklist_token = BlacklistToken(
+                token=json.loads(resp_register.data.decode())['auth_token'])
+            db.session.add(blacklist_token)
+            db.session.commit()
+            response = self.client.post(
+                '/tickets/1/createComment',
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        resp_register.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'fail')
+
+    def test_comment_ticket_add_logged_in(self):
+        with self.client:
+            # Add dummy tickets
+            create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
+                          "Bug Report", "High", "Testing")
+            # user registration
+            resp_register = register_user(self, 'byrd@byrd.com', 'byrd')
+            data_register = json.loads(resp_register.data.decode())
+            self.assertTrue(data_register['status'] == 'success')
+            self.assertTrue(
+                data_register['message'] == 'Successfully registered.')
+            self.assertTrue(data_register['auth_token'])
+            self.assertTrue(resp_register.content_type == 'application/json')
+            self.assertEqual(resp_register.status_code, 201)
+            # user login
+            resp_login = login_user(self, 'byrd@byrd.com', 'byrd')
+            data_login = json.loads(resp_login.data.decode())
+            self.assertTrue(data_login['status'] == 'success')
+            self.assertTrue(data_login['message'] == 'Successfully logged in.')
+            self.assertTrue(data_login['auth_token'])
+            self.assertTrue(resp_login.content_type == 'application/json')
+            self.assertEqual(resp_login.status_code, 200)
+            response = self.client.post(
+                '/tickets/1/createComment',
+                content_type='application/json',
+                data=json.dumps(dict(
+                    email="byrd@byrd.com",
+                    comment=" Commenting ")),
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        resp_login.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'success')
+            self.assertTrue(data['message'] == 'Comment successfully added!')

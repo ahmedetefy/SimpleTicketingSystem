@@ -23,6 +23,7 @@ export class TicketListComponent implements OnInit {
   ngOnInit(): void {
     this.getList()
     const token = localStorage.getItem('token');
+    console.log(token)
     if (token) {
       this.auth.ensureAuthenticated(token)
       .then((user) => {

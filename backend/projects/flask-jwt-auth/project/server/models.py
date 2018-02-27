@@ -105,6 +105,7 @@ class Ticket(db.Model):
     urgency = db.Column(db.String(255), nullable=False)
     message = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(80), nullable=True)
+    ticketComments = db.relationship('Comment', backref='ticket')
 
     def __init__(self, name, email, subject, type, urgency, message):
         self.name = name
@@ -115,3 +116,18 @@ class Ticket(db.Model):
         self.message = message
         self.status = "Open"
 
+
+class Comment(db.Model):
+    """
+    Comment model for storing comment related information
+    """
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(255), nullable=False)
+    comment = db.Column(db.Text, nullable=False)
+    ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
+
+    def __init__(self, email, comment):
+        self.email = email
+        self.comment = comment
