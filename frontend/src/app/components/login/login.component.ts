@@ -16,26 +16,13 @@ export class LoginComponent implements OnInit {
 
   constructor(private auth: AuthService, private router:Router) { }
 
-  ngOnInit(): void {
-    let sampleUser: any = {
-      email: 'michael@realpython.com' as string,
-      password: 'michael' as string
-    };
-    this.auth.register(sampleUser)
-    .then((user) => {
-      // console.log(user.json());
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+  ngOnInit(): void {}
 
   login(): void {
   	this.auth.login(this.user)
     .then((user) => {
       localStorage.setItem('token', user.json().auth_token);
       this.router.navigateByUrl('/tickets');
-      // console.log(user.json());
     })
     .catch((err) => {
       console.log(err);

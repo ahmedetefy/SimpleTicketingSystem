@@ -163,6 +163,10 @@ class DeleteTicketAPI(MethodView):
         if auth_token:
             resp = User.decode_auth_token(auth_token)
             if not isinstance(resp, str):
+                comments = Ticket.query.filter_by(
+                    id=ticketID).first().ticketComments
+                for c in comments:
+                    db.session.delete(c)
                 Ticket.query.filter_by(id=ticketID).delete()
                 db.session.commit()
                 responseObject = {

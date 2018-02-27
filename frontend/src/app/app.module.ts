@@ -14,6 +14,7 @@ import { LoginRedirect } from './services/login-redirect.service';
 import { AuthService } from './services/auth.service';
 import { TicketService } from './services/ticket.service';
 import { LogoutComponent } from './components/logout/logout.component';
+import { PopulateComponent } from './components/populate/populate.component';
 
 
 
@@ -24,6 +25,7 @@ import { LogoutComponent } from './components/logout/logout.component';
     LoginComponent,
     TicketListComponent,
     LogoutComponent,
+    PopulateComponent,
   ],
   imports: [
   	AppRoutingModule,
