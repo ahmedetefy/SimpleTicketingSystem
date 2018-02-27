@@ -13,6 +13,7 @@ import { EnsureAuthenticated } from './services/ensure-authenticated.service';
 import { LoginRedirect } from './services/login-redirect.service';
 import { AuthService } from './services/auth.service';
 import { TicketService } from './services/ticket.service';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 
@@ -22,6 +23,7 @@ import { TicketService } from './services/ticket.service';
     HomeComponent,
     LoginComponent,
     TicketListComponent,
+    LogoutComponent,
   ],
   imports: [
   	AppRoutingModule,

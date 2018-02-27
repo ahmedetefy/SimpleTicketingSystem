@@ -1,7 +1,13 @@
 <div class="container">
 	<div class="container">
-		<h1 class="theme-blue"><b> Tickets </b></h1>
+		<h1 class="theme-blue col-md-4"><b> Tickets </b></h1>
+		<h4 class="theme-orange col-md-4 col-md-offset-4">
+			<b> Hello {{userEmail}} </b>
+			<button routerLink="/logout" class="btn logout-button" > Logout </button>
+		</h4>
 		<br><br>
+		<br><br>
+		<br>
 		<div class="row" *ngFor="let item of ticketList; let i = index">
 			<div *ngIf='!toUpdate' class="col-md-12 col-sm-12" [attr.data-index]="i">
 				<!-- <hr/> -->

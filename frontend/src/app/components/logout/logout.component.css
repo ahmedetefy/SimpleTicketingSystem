@@ -1,0 +1,10 @@
+.section{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+.logout-button {
+	background-color: #103b5f;
+}
+.btn:hover, .btn:focus {
+	color: white;
+}

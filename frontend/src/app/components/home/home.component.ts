@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { TicketService } from '../../services/ticket.service';
 
@@ -13,9 +12,10 @@ import { TicketItem } from '../../models/ticket-item';
 export class HomeComponent implements OnInit {
   ticketSubmitted: TicketItem = new TicketItem();
 
-  constructor(private ticket: TicketService, private router:Router) { }
+  constructor(private ticket: TicketService) { }
 
   ngOnInit() {
+    // localStorage.clear
   }
   
   submitTicket(ticketForm) {

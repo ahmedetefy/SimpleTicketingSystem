@@ -16,11 +16,25 @@ export class TicketListComponent implements OnInit {
   updatedTicket: TicketItem = new TicketItem();
   @Input()
   relIndex: number;
+  userEmail:string;
 
   constructor(private auth: AuthService, private ticket: TicketService) {}
 
   ngOnInit(): void {
     this.getList()
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.auth.ensureAuthenticated(token)
+      .then((user) => {
+        // console.log(user.json());
+        if (user.json().status === 'success') {
+          this.userEmail = user.json().data['email'];
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
+    }
   }
 
   getList() {

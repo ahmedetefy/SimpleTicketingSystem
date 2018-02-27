@@ -13,3 +13,9 @@ h2 {
     margin-left: 10px;
     margin-top: 15px;
 }
+.logout-button {
+	background-color: #103b5f;
+}
+.btn:hover, .btn:focus {
+	color: white;
+}
