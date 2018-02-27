@@ -127,7 +127,7 @@ class UpdateTicketAPI(MethodView):
 
 
 class DeleteTicketAPI(MethodView):
-    def delete(self):
+    def delete(self, ticketID):
         auth_header = request.headers.get('Authorization')
         if auth_header:
             try:
@@ -143,8 +143,7 @@ class DeleteTicketAPI(MethodView):
         if auth_token:
             resp = User.decode_auth_token(auth_token)
             if not isinstance(resp, str):
-                post_data = request.get_json()
-                Ticket.query.filter_by(id=post_data.get('id')).delete()
+                Ticket.query.filter_by(id=ticketID).delete()
                 db.session.commit()
                 responseObject = {
                     'status': 'success',
@@ -188,7 +187,7 @@ tickets_blueprint.add_url_rule(
     methods=['PUT']
 )
 tickets_blueprint.add_url_rule(
-    '/tickets/delete',
+    '/tickets/delete/<int:ticketID>',
     view_func=delete_ticket_view,
     methods=['DELETE']
 )

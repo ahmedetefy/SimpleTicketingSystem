@@ -24,4 +24,14 @@ export class TicketService {
     return this.http.post(url, ticket, {headers: this.headers}).toPromise();
    }
 
+   deleteTicket(token, ticketID): Promise<any> {
+     let url: string = `${this.BASE_URL}/delete/${ticketID}`;
+     let headers: Headers = new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+     return this.http.delete(url, {headers: headers}).toPromise();
+   }
+
+
 }

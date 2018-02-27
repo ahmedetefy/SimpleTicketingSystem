@@ -22,13 +22,10 @@
 .theme-orange {
     color: #f59723;
 }
-/*
-/* Created by Filipe Pina
- * Specific styles of signin, register, component
- */
-/*
- * General styles
- */
+.theme-blue {
+    color: #103b5f;
+}
+
 #playground-container {
     height: 500px;
     overflow: hidden !important;

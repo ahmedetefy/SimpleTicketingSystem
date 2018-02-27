@@ -17,7 +17,10 @@ export class TicketListComponent implements OnInit {
   constructor(private auth: AuthService, private ticket: TicketService) {}
 
   ngOnInit(): void {
+    this.getList()
+  }
 
+  getList() {
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -30,7 +33,18 @@ export class TicketListComponent implements OnInit {
         console.log(err);
       });
     }
+  }
 
+  delete(ticketID) {
+    this.ticket.deleteTicket(localStorage.getItem('token'), ticketID)
+    .then((ticketRes) => {
+      alert("Your ticket has been deleted successfully!")
+       // window.location.reload();
+
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   }
 

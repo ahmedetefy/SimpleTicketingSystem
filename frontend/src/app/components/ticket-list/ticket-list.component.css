@@ -1,0 +1,10 @@
+hr {
+	width: 100%;
+	border-color: rgba(173, 172, 172, 0.3);
+}
+h2 {
+	margin-top: 0
+}
+.span-class {
+	margin-top: 10px;
+}

@@ -219,6 +219,8 @@ class TestTicketUpdateAPI(BaseTestCase):
 class TestTicketDeleteAPI(BaseTestCase):
     def test_ticket_delete_not_logged_in(self):
         with self.client:
+            create_ticket(self, "byrd@byrd.com", "byrd", "Hello World",
+                          "Bug Report", "High", "Testing")
             # user registration
             resp_register = register_user(self, 'byrd@byrd.com', 'byrd')
             data_register = json.loads(resp_register.data.decode())
@@ -234,7 +236,7 @@ class TestTicketDeleteAPI(BaseTestCase):
             db.session.add(blacklist_token)
             db.session.commit()
             response = self.client.delete(
-                '/tickets/delete',
+                '/tickets/delete/1',
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
                         resp_register.data.decode()
@@ -268,9 +270,7 @@ class TestTicketDeleteAPI(BaseTestCase):
             self.assertEqual(resp_login.status_code, 200)
             #  Request ticket list
             response = self.client.delete(
-                '/tickets/delete',
-                data=json.dumps(dict(
-                    id=1)),
+                '/tickets/delete/1',
                 content_type='application/json',
                 headers=dict(
                     Authorization='Bearer ' + json.loads(

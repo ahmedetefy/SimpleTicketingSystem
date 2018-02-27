@@ -1,7 +1,40 @@
+<div class="container">
+	<div class="container">
+		<h1 class="theme-blue"><b> Tickets </b></h1>
+		<br><br>
+		<div class="row" *ngFor="let item of ticketList">
+			<div class="col-md-12 col-sm-12">
+				<!-- <hr/> -->
+				<div class="row">
+					<h2 class="col-md-4">{{item.subject}}</h2>
+					<div class="span-class col-md-3">
+						<span *ngIf='item.urgency == "High Urgency"' class="label label-danger">High Urgency</span>
+						<span *ngIf='item.urgency == "Medium Urgency"' class="label label-warning">Medium Urgency</span>
+						<span *ngIf='item.urgency == "Low Urgency"' class="label label-success">Low Urgency</span>
+						<span *ngIf='item.type == "Bug Report"' class="label label-danger">Bug Report</span>
+						<span *ngIf='item.type == "Featured Request"' class="label label-warning">Featured Request</span>
+						<span *ngIf='item.type == "Other"' class="label label-success">Other</span>
+						<span *ngIf='item.status == "Open"' class="label label-info">Open</span>
+						<span *ngIf='item.status == "In Progress"' class="label label-warning">In Progress</span>
+						<span *ngIf='item.status == "Completed"' class="label label-success">Completed</span>
+						<span *ngIf='item.status == "Rejected"' class="label label-danger">Rejected</span>
+					</div>
+					<div class="text-right col-md-3 col-md-offset-2 span-class">
+						<button  type="button" class="btn btn-default">Edit</button>
+						<button (click)='delete(item.id); getList()' type="button" class="btn btn-default">Delete</button>
+						<button type="button" class="btn btn-default">Comment</button>
 
-
-<div *ngFor="let item of ticketList">
-	<p>{{item.name}}</p>
-	<hr>
+					</div>
+					
+				</div>
+				<div class="row">
+					<p>{{item.message}}</p>
+				</div>
+				
+				<hr/>
+			</div>
+			
+		</div>
+	</div>
 </div>
 
