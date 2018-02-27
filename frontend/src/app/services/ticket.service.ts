@@ -32,6 +32,14 @@ export class TicketService {
     });
      return this.http.delete(url, {headers: headers}).toPromise();
    }
+   updateTicket(token, ticket:TicketItem): Promise<any> {
+     let url: string = `${this.BASE_URL}/edit`;
+     let headers: Headers = new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+     return this.http.put(url, ticket, {headers: headers}).toPromise();
+   }
 
 
 }

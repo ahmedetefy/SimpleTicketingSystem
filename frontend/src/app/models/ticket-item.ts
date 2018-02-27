@@ -6,6 +6,7 @@ export class TicketItem {
   urgency:string;
   message:string;
   status?: string;
+  id?:number;
 
   constructor() {}
 

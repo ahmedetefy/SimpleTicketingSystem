@@ -8,3 +8,8 @@ h2 {
 .span-class {
 	margin-top: 10px;
 }
+.message-class {
+	margin-right: 20px;
+    margin-left: 10px;
+    margin-top: 15px;
+}
