@@ -16,7 +16,6 @@ export class TicketListComponent implements OnInit {
   updatedTicket: TicketItem = new TicketItem();
   @Input()
   relIndex: number;
-  // item: TicketItem = new TicketItem();
 
   constructor(private auth: AuthService, private ticket: TicketService) {}
 

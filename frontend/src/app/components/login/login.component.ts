@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     };
     this.auth.register(sampleUser)
     .then((user) => {
-      console.log(user.json());
+      // console.log(user.json());
     })
     .catch((err) => {
       console.log(err);
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     .then((user) => {
       localStorage.setItem('token', user.json().auth_token);
       this.router.navigateByUrl('/tickets');
-      console.log(user.json());
+      // console.log(user.json());
     })
     .catch((err) => {
       console.log(err);
