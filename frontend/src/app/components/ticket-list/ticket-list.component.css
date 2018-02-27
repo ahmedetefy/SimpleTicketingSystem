@@ -19,3 +19,7 @@ h2 {
 .btn:hover, .btn:focus {
 	color: white;
 }
+
+.marginForInput {
+	margin-bottom: 20px;
+}

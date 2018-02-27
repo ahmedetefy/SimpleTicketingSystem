@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { TicketService } from '../../services/ticket.service';
+
 import { TicketItem } from '../../models/ticket-item';
+import { Comment } from '../../models/comment';
 
 @Component({
   selector: 'ticket-list',
@@ -12,22 +14,26 @@ import { TicketItem } from '../../models/ticket-item';
 export class TicketListComponent implements OnInit {
 
   toUpdate: boolean = false;
+  toAddComment: boolean= false;
   ticketList: [TicketItem];
   updatedTicket: TicketItem = new TicketItem();
   @Input()
   relIndex: number;
+  @Input()
+  commentIndex: number;
   userEmail:string;
+  commentAddition: Comment = new Comment();
 
-  constructor(private auth: AuthService, private ticket: TicketService) {}
+  constructor(private auth: AuthService, private ticket: TicketService) {
+  }
 
   ngOnInit(): void {
     this.getList()
     const token = localStorage.getItem('token');
-    console.log(token)
+    // console.log(token)
     if (token) {
       this.auth.ensureAuthenticated(token)
       .then((user) => {
-        // console.log(user.json());
         if (user.json().status === 'success') {
           this.userEmail = user.json().data['email'];
         }
@@ -87,7 +93,21 @@ export class TicketListComponent implements OnInit {
     });
 
   }
-  toUpdateMeth(i) {
+  addCommentTicket(form) {
+    const token = localStorage.getItem('token');
+    this.ticket.addComment(token, form.value['ticket_id'], this.commentAddition)
+      .then((resp) => {
+        alert("Your comment has been updated successfully!")
+        this.toAddComment = false
+        form.reset()
+        this.getList()
+     })
+      .catch((err) => {
+        console.log(err);
+     });
+
+  }
+  toUpdateTrigger(i) {
     this.relIndex = i;
     if(this.toUpdate) {
       this.toUpdate = false;
@@ -95,6 +115,17 @@ export class TicketListComponent implements OnInit {
     }
     else {
       this.toUpdate = true;
+    }
+  }
+
+  toCommentTrigger(i) {
+    this.commentIndex = i;
+    if(this.toAddComment) {
+      this.toAddComment = false;
+      this.getList()
+    }
+    else {
+      this.toAddComment = true;
     }
   }
 

@@ -1,208 +1,243 @@
 <div class="container">
-	<!-- <div class="container"> -->
-		<h1 class="theme-blue col-md-4 col-sm-12"><b> Tickets </b></h1>
-		<h4 class="theme-orange col-md-4 col-md-offset-4 col-sm-12">
-			<b> Hello {{userEmail}} </b>
-			<button routerLink="/logout" class="btn logout-button" > Logout </button>
-		</h4>
-		<br><br>
-		<br><br>
-		<br>
-		<div class="" *ngFor="let item of ticketList; let i = index">
-			<div *ngIf='!toUpdate' class="col-md-12 col-sm-12" [attr.data-index]="i">
-				<!-- <hr/> -->
-				<div  class="row">
-					<h2 class="col-md-4">{{item.subject}}</h2>
-					<div class="span-class col-md-3">
-						<span *ngIf='item.urgency == "High Urgency"' class="label label-danger">High Urgency</span>
-						<span *ngIf='item.urgency == "Medium Urgency"' class="label label-warning">Medium Urgency</span>
-						<span *ngIf='item.urgency == "Low Urgency"' class="label label-success">Low Urgency</span>
-						<span *ngIf='item.type == "Bug Report"' class="label label-danger">Bug Report</span>
-						<span *ngIf='item.type == "Featured Request"' class="label label-warning">Featured Request</span>
-						<span *ngIf='item.type == "Other"' class="label label-success">Other</span>
-						<span *ngIf='item.status == "Open"' class="label label-info">Open</span>
-						<span *ngIf='item.status == "In Progress"' class="label label-warning">In Progress</span>
-						<span *ngIf='item.status == "Completed"' class="label label-success">Completed</span>
-						<span *ngIf='item.status == "Rejected"' class="label label-danger">Rejected</span>
-					</div>
-					<div class="text-right col-md-3 col-md-offset-2 span-class">
-						<button  (click) = 'toUpdateMeth(i)' type="button" class="btn btn-default">Edit</button>
-						<button (click)='delete(item.id); getList()' type="button" class="btn btn-default">Delete</button>
-						<button type="button" class="btn btn-default">Comment</button>
-					</div>
-					
+	<h1 class="theme-blue col-md-4 col-sm-12"><b> Tickets </b></h1>
+	<h4 class="theme-orange col-md-4 col-md-offset-4 col-sm-12">
+		<b> Hello {{userEmail}} </b>
+		<button routerLink="/logout" class="btn logout-button" > Logout </button>
+	</h4>
+	<br><br>
+	<br><br>
+	<br>
+	<div class="col-sm-12" *ngFor="let item of ticketList; let i = index" >
+		<div *ngIf='!toUpdate' class="col-md-12 col-sm-12" [attr.data-index]="i">
+			<div  class="row">
+				<h2 class="col-md-4 col-sm-4">{{item.subject}}</h2>
+				<div class="span-class col-md-3 col-sm-6">
+					<span *ngIf='item.urgency == "High Urgency"' class="label label-danger">High Urgency</span>
+					<span *ngIf='item.urgency == "Medium Urgency"' class="label label-warning">Medium Urgency</span>
+					<span *ngIf='item.urgency == "Low Urgency"' class="label label-success">Low Urgency</span>
+					<span *ngIf='item.type == "Bug Report"' class="label label-danger">Bug Report</span>
+					<span *ngIf='item.type == "Featured Request"' class="label label-warning">Featured Request</span>
+					<span *ngIf='item.type == "Other"' class="label label-success">Other</span>
+					<span *ngIf='item.status == "Open"' class="label label-info">Open</span>
+					<span *ngIf='item.status == "In Progress"' class="label label-warning">In Progress</span>
+					<span *ngIf='item.status == "Completed"' class="label label-success">Completed</span>
+					<span *ngIf='item.status == "Rejected"' class="label label-danger">Rejected</span>
 				</div>
-				<div class="row">
-					<h4 class="col-md-2"><b>{{item.name}}</b> </h4>
-					<h4 class="col-md-2">{{item.email}}</h4>
+				<div class="text-right col-md-3 col-md-offset-2 col-sm-6 span-class">
+					<button  (click) = 'toUpdateTrigger(i)' type="button" class="btn btn-default">Edit</button>
+					<button (click)='delete(item.id); getList()' type="button" class="btn btn-default">Delete</button>
+					<button (click) = 'toCommentTrigger(i)' type="button" class="btn btn-default">Comment</button>
 				</div>
+				
+				
+			</div>
+			<div class="row">
+				<h4 class="col-md-2"><b>{{item.name}}</b> </h4>
+				<h4 class="col-md-2">{{item.email}}</h4>
+			</div>
 
-				<div class="row message-class">
-					<p>{{item.message}}</p>
+			<div class="row message-class">
+				<p>{{item.message}}</p>
+			</div>
+		
+			<br><br>
+			<div *ngFor="let comment of item.comments">
+				<div class="col-sm-1">
+					<div class="thumbnail">
+						<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+					</div>
 				</div>
+				<div class="col-sm-11">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>{{comment.email}}</strong> 
+						</div>
+						<div class="panel-body">
+						{{comment.comment}}
+						</div>
+					</div>
+				</div>
+			</div>
 			
-				<br><br>
-				<div *ngFor="let comment of item.comments" class="container">
-					<div class="row">
-						<div class="col-sm-1">
-							<div class="thumbnail">
-								<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+			<div *ngIf="toAddComment && i == commentIndex">
+				<form #ticketCommentForm='ngForm' (ngSubmit)='addCommentTicket(ticketCommentForm)'>
+					<input name='ticket_id' id='ticket_id' [(ngModel)]='item.id' hidden />
+					<div class="form-group " >
+
+						<label  class="col-md-2 control-label">Email</label>
+						<div class="col-md-10 marginForInput">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+
+								<input [(ngModel)]="commentAddition.email" type="text" class="form-control " name="emailComment" id="emailComment" #emailCommentValid="ngModel" required/> 
+							</div>
+							<div *ngIf="emailCommentValid.errors && (emailCommentValid.dirty || emailCommentValid.touched)" class="text-center">
+								<p class="field-error" [hidden]="!emailCommentValid.errors.required">
+								  Email is is required!
+								</p>
 							</div>
 						</div>
-						<div class="col-sm-5">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<strong>{{comment.email}}</strong> 
-								</div>
-								<div class="panel-body">
-								{{comment.comment}}
-								</div>
+					</div>
+					<div class="form-group marginForInput">
+						<label for="messageComment" class="col-md-2 control-label">Comment</label>
+						<div class="col-md-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+								<textarea #messageCommentValid="ngModel" required [(ngModel)]='commentAddition.comment' type="text" class="form-control" name="messageComment" id="messageComment"  > </textarea>
 							</div>
+							<div *ngIf="messageCommentValid.errors && (messageCommentValid.dirty || messageCommentValid.touched)" class="text-center">
+								<p class="field-error" [hidden]="!messageCommentValid.errors.required">
+								  Comment is required!
+								</p>	
+							</div>
+						</div>
+					</div>
+					<div class=" text-center">
+						<div class="form-group col-md-3">
+							<button [disabled]="!ticketCommentForm.valid" type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Add Comment</button>
+						</div>
+						<div class="form-group col-md-3">
+							<button  [attr.data-index]="i" (click)="toCommentTrigger(item)" type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Cancel</button>
+						</div>
+					</div>
+				</form>
+
+			</div>
+
+
+			<hr/>
+		</div>
+		<div *ngIf='toUpdate && i == relIndex' class="col-md-12 col-sm-12">
+			<div class="row">
+			<form #ticketForm='ngForm' (ngSubmit)='updateTicket(ticketForm)'>
+				<input name='id' id='id' [(ngModel)]='item.id' hidden />
+				<div class="form-group">
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+							<input  #subjectValid="ngModel" required [(ngModel)]='item.subject' type="text" class="form-control" name="subject" id="subject"  />
+						</div>
+						<div *ngIf="subjectValid.errors && (subjectValid.dirty || subjectValid.touched)" class="text-center">
+							<p class="field-error" [hidden]="!subjectValid.errors.required">
+							  Subject is is required!
+							</p>	
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-th " aria-hidden="true"></i></span>
+							<select #typeValid="ngModel" required [(ngModel)]='item.type' name="type" class="form-control" id="typeSelect" >
+							  <option value="" selected ></option>
+						      <option value="Bug Report">Bug Report</option>
+						      <option value="Featured Request">Feature Request</option>
+						      <option value="Other">Other</option>
+						    </select>
+						</div>
+						<div *ngIf="typeValid.errors && (typeValid.dirty || typeValid.touched)" class="text-center">
+							<p class="field-error" [hidden]="!typeValid.errors.required">
+							  Type is required!
+							</p>	
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-2">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-hourglass-half fa" aria-hidden="true"></i></span>
+							
+							<select [(ngModel)]='item.urgency' #urgencyValid="ngModel" required name="urgency" class="form-control" id="urgencySelect" >
+							  <option value="" selected ></option>
+						      <option value="Low Urgency"><span class="label label-success">Low Urgency</span></option>
+						      <option value="Medium Urgency"><span class="label label-warning">Medium Urgency</span></option>
+						      <option value="High Urgency"><span class="label label-danger">High Urgency</span></option>
+						    </select>
+						</div>
+						<div *ngIf="urgencyValid.errors && (urgencyValid.dirty || urgencyValid.touched)" class="text-center">
+							<p class="field-error" [hidden]="!urgencyValid.errors.required">
+							  Urgency is required!
+							</p>	
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-2 ">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-hourglass-half fa" aria-hidden="true"></i></span>
+							
+							<select [(ngModel)]='item.status' #statusValid="ngModel" required name="status" class="form-control" id="statusSelect" >
+							  <option value="" selected ></option>
+						      <option value="Open">Open</option>
+						      <option value="In Progress">In Progress</option>
+						      <option value="Rejected">Rejected</option>
+						      <option value="Completed">Completed</option>
+						    </select>
+						</div>
+						<div *ngIf="statusValid.errors && (statusValid.dirty || statusValid.touched)" class="text-center">
+							<p class="field-error" [hidden]="!statusValid.errors.required">
+							  Status is required!
+							</p>	
+						</div>
+					</div>
+				</div>
+				<br><br><br><br>
+				<div class="form-group" >
+					<div class="col-md-3">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+							<input [(ngModel)]="item.name" type="text" class="form-control" name="name" id="name" #nameValid="ngModel" value="{{item.name}}" required/> 
+						</div>
+						<div *ngIf="nameValid.errors && (nameValid.dirty || nameValid.touched)" class="text-center">
+							<p class="field-error" [hidden]="!nameValid.errors.required">
+							  Name is is required!
+							</p>
+								
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+							<input #emailValid="ngModel" required [(ngModel)]='item.email' type="text" class="form-control" name="email" id="email"/>
+						</div>
+						<div *ngIf="emailValid.errors && (emailValid.dirty || emailValid.touched)" class="text-center">
+							<p class="field-error" [hidden]="!emailValid.errors.required">
+							  Email is is required!
+							</p>	
 						</div>
 					</div>
 				</div>
 				
-				<hr/>
-			</div>
-			<div *ngIf='toUpdate && i == relIndex' class="col-md-12 col-sm-12">
-				<div class="row">
-				<form #ticketForm='ngForm' (ngSubmit)='updateTicket(ticketForm)'>
-					<input name='id' id='id' [(ngModel)]='item.id' hidden />
-					<div class="form-group">
-						<div class="col-md-4">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-								<input  #subjectValid="ngModel" required [(ngModel)]='item.subject' type="text" class="form-control" name="subject" id="subject"  />
-							</div>
-							<div *ngIf="subjectValid.errors && (subjectValid.dirty || subjectValid.touched)" class="text-center">
-								<p class="field-error" [hidden]="!subjectValid.errors.required">
-								  Subject is is required!
-								</p>	
-							</div>
+				<br><br><br><br>
+				<div class="form-group">
+					<div class="col-md-10">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+							<textarea #messageValid="ngModel" required [(ngModel)]='item.message' type="text" class="form-control" name="message" id="message"  > </textarea>
+						</div>
+						<div *ngIf="messageValid.errors && (messageValid.dirty || messageValid.touched)" class="text-center">
+							<p class="field-error" [hidden]="!messageValid.errors.required">
+							  Message is required!
+							</p>	
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-md-2">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-th " aria-hidden="true"></i></span>
-								<select #typeValid="ngModel" required [(ngModel)]='item.type' name="type" class="form-control" id="typeSelect" >
-								  <option value="" selected ></option>
-							      <option value="Bug Report">Bug Report</option>
-							      <option value="Featured Request">Feature Request</option>
-							      <option value="Other">Other</option>
-							    </select>
-							</div>
-							<div *ngIf="typeValid.errors && (typeValid.dirty || typeValid.touched)" class="text-center">
-								<p class="field-error" [hidden]="!typeValid.errors.required">
-								  Type is required!
-								</p>	
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-2">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-hourglass-half fa" aria-hidden="true"></i></span>
-								
-								<select [(ngModel)]='item.urgency' #urgencyValid="ngModel" required name="urgency" class="form-control" id="urgencySelect" >
-								  <option value="" selected ></option>
-							      <option value="Low Urgency"><span class="label label-success">Low Urgency</span></option>
-							      <option value="Medium Urgency"><span class="label label-warning">Medium Urgency</span></option>
-							      <option value="High Urgency"><span class="label label-danger">High Urgency</span></option>
-							    </select>
-							</div>
-							<div *ngIf="urgencyValid.errors && (urgencyValid.dirty || urgencyValid.touched)" class="text-center">
-								<p class="field-error" [hidden]="!urgencyValid.errors.required">
-								  Urgency is required!
-								</p>	
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-2 ">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-hourglass-half fa" aria-hidden="true"></i></span>
-								
-								<select [(ngModel)]='item.status' #statusValid="ngModel" required name="status" class="form-control" id="statusSelect" >
-								  <option value="" selected ></option>
-							      <option value="Open">Open</option>
-							      <option value="In Progress">In Progress</option>
-							      <option value="Rejected">Rejected</option>
-							      <option value="Completed">Completed</option>
-							    </select>
-							</div>
-							<div *ngIf="statusValid.errors && (statusValid.dirty || statusValid.touched)" class="text-center">
-								<p class="field-error" [hidden]="!statusValid.errors.required">
-								  Status is required!
-								</p>	
-							</div>
-						</div>
-					</div><br><br><br><br>
-					<!-- <div class="row"> -->
-						<div class="form-group" >
-							<div class="col-md-3">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input [(ngModel)]="item.name" type="text" class="form-control" name="name" id="name" #nameValid="ngModel" value="{{item.name}}" required/> 
-								</div>
-								<div *ngIf="nameValid.errors && (nameValid.dirty || nameValid.touched)" class="text-center">
-									<p class="field-error" [hidden]="!nameValid.errors.required">
-									  Name is is required!
-									</p>
-										
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input #emailValid="ngModel" required [(ngModel)]='item.email' type="text" class="form-control" name="email" id="email"/>
-								</div>
-								<div *ngIf="emailValid.errors && (emailValid.dirty || emailValid.touched)" class="text-center">
-									<p class="field-error" [hidden]="!emailValid.errors.required">
-									  Email is is required!
-									</p>	
-								</div>
-								<!-- <div class="text-center" [hidden]="!emailValid.errors.pattern">
-						          <p class="field-error">Must be a valid Email!</p>
-						        </div> -->
-							</div>
-						</div>
-
-						<!-- <div class="form-group">
-							
-						</div> -->
-					<!-- </div> -->
-					
-					<br><br><br><br>
-					<div class="form-group">
-						<div class="col-md-10">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-								<textarea #messageValid="ngModel" required [(ngModel)]='item.message' type="text" class="form-control" name="message" id="message"  > </textarea>
-							</div>
-							<div *ngIf="messageValid.errors && (messageValid.dirty || messageValid.touched)" class="text-center">
-								<p class="field-error" [hidden]="!messageValid.errors.required">
-								  Message is required!
-								</p>	
-							</div>
-						</div>
-					</div>
-
-					
-					<div class=" text-center">
-						<div class="form-group col-md-3 ">
-							<button [disabled]="!ticketForm.valid" type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Update</button>
-						</div>
-						<div class="form-group col-md-3 ">
-							<button  [attr.data-index]="i" (click)="toUpdateMeth(item)" type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Cancel</button>
-						</div>
-					</div>
-					
-				</form>
 				</div>
+
+				
+				<div class=" text-center">
+					<div class="form-group col-md-3 ">
+						<button [disabled]="!ticketForm.valid" type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Update</button>
+					</div>
+					<div class="form-group col-md-3 ">
+						<button  [attr.data-index]="i" (click)="toUpdateTrigger(item)" type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Cancel</button>
+					</div>
+				</div>
+				
+			</form>
 			</div>
-			
 		</div>
+		
 	</div>
-<!-- </div> -->
+</div>
+
 
