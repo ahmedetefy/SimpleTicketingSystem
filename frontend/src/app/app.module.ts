@@ -8,13 +8,13 @@ import { AppRoutingModule } from './app.routing';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+import { LogoutComponent } from './components/logout/logout.component';;
+
 
 import { EnsureAuthenticated } from './services/ensure-authenticated.service';
 import { LoginRedirect } from './services/login-redirect.service';
 import { AuthService } from './services/auth.service';
 import { TicketService } from './services/ticket.service';
-import { LogoutComponent } from './components/logout/logout.component';
-import { PopulateComponent } from './components/populate/populate.component';
 
 
 
@@ -24,8 +24,7 @@ import { PopulateComponent } from './components/populate/populate.component';
     HomeComponent,
     LoginComponent,
     TicketListComponent,
-    LogoutComponent,
-    PopulateComponent,
+    LogoutComponent
   ],
   imports: [
   	AppRoutingModule,
